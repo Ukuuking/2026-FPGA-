@@ -1,0 +1,11 @@
+﻿TD 工程配置目录。
+
+本目录文件
+  PosterScreen.al
+        TD 工程文件，用 TD 6.2 打开这一个即可。里面登记了 55 个源文件条目
+        （Verilog 源码、管脚约束、时序约束、ChipWatcher 配置、IP 配置）
+        以及器件型号 EG4S20BG256。
+
+子目录
+  al_ip\                          工程级 IP：2 个 PLL + 1 个音频采样 ROM
+  PosterScreen_Runs\  TD 的两次 Run：syn_1 综合、phy_1 布局布线

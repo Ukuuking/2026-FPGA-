@@ -1,0 +1,36 @@
+﻿TF 卡、图像、音频、SDRAM 帧缓存与数码管。
+
+本目录文件
+  sd_card_top.v              SD 卡控制器顶层。上电完成初始化后进入可读写状态，
+                             内部实例化 spi_master、sd_card_cmd、sd_card_sec_read_write。
+  sd_card_cmd.v              SD 命令层。CMD0/8/ACMD41/2/3/16/17/24 的发送与响应接收，
+                             发送时计算 CRC7。
+  sd_card_sec_read_write.v   SD 数据层。按扇区收发数据块，带 CRC16 与超时重试。
+  spi_master.v               SPI 主机，仅用于 SD 卡初始化阶段的低速命令交互。
+  sd_card_bmp.v              图片缓存池与加载调度。维护 6 个 SDRAM 帧槽，显示指针与写入
+                             指针分离，命中缓存即一帧内换图；带 50ms 状态心跳看门狗。
+                             内部实例化 bmp_read。
+  bmp_read.v                 BMP 扫描、解析、缩放与像素读出。按簇步进扫描记录起始扇区，
+                             读文件头取几何参数，逐行读出像素，等比缩放居中后写入帧缓存。
+
+  frame_read_write.v         SDRAM 帧缓冲读写接口。写侧按行突发写入、读侧按显示时序
+                             连续读出，两边分时占用同一个 SDRAM 接口。
+                             内部实例化 frame_fifo_write 与 frame_fifo_read。
+  frame_fifo_write.v         写入侧帧 FIFO，跨 sd_card_clk 与 SDRAM 侧时钟域。
+  frame_fifo_read.v          读出侧帧 FIFO，跨 video_clk 与 SDRAM 侧时钟域。
+  sdram.v                    SDRAM 控制器顶层。内部实例化 sdr_as_ram（加密网表）
+                             与 EG_PHY_SDRAM_2M_32 原语。
+                             文件里两个端口带 //synthesis keep 综合指令，
+                             那不是普通注释，删掉会让 LUT 从 10243 涨到 10354。
+
+  wav_player.v               WAV 解析与播放。读 fmt 块取采样率、位宽、声道数，
+                             跳过 data 之前的块，再按 I2S 时序送出采样。
+  video_timing_data.v        640x480 视频时序，输出 hs/vs/de 与像素坐标。
+  video_delay.v              视频行缓冲延迟。
+  video_define.v             分辨率选择宏（标记 AutoExcluded）。
+
+  seg_scan.v                 六位数码管动态扫描，逐位点亮并输出段码与位选。
+  seg_decoder.v              七段数码管译码。
+  color_bar.v                彩条测试图案，用于不带卡时验证视频通路
+                             （由 video_timing_data.v 实例化）。
+  ax_debounce.v              按键消抖。标记 AutoExcluded，没有模块实例化它。

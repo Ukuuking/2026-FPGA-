@@ -1,0 +1,17 @@
+﻿全局宏与 SDRAM 控制器网表。
+
+本目录文件
+  global_def.v
+        SDRAM 与全局参数宏：DATA_WIDTH 32、ADDR_WIDTH 21、DM_WIDTH 4、
+        ROW_WIDTH 11、BA_WIDTH 2，以及 SDRAM 时钟周期与自刷新间隔。
+        被 SD\sdram.v 与下面三个 .enc.v 用 `include 引入。
+        在 .al 里标记 AutoExcluded，它只被 include。
+
+  sdr_as_ram.enc.v
+        SDRAM 控制器对外接口层，加密网表。在 SD\sdram.v 里实例化，实例名 u2_ram。
+  sdr_init_ref.enc.v
+        SDRAM 上电初始化与自刷新时序，加密网表。
+  sdr_wrrd.enc.v
+        SDRAM 读写状态机与命令时序，加密网表。
+
+

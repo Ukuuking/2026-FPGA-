@@ -1,0 +1,5 @@
+﻿设计源文件。
+
+子目录
+  hdl_source\          Verilog 源码、加密网表、IP 配置、ROM 初值
+  constraints_source\  管脚约束、时序约束、ChipWatcher 配置

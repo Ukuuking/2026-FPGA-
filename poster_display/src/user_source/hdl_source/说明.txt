@@ -1,0 +1,30 @@
+﻿Verilog 源码主目录。
+
+
+
+本目录文件
+  top_tf_hdmi_audio.v                顶层。串联图像、音频、OSD 三条通路，
+                                     产生各时钟，做亮度合成与环境光采集。
+  startup_pulse.v                    上电复位脉冲，复位释放后产生一个单拍脉冲。
+  video_timing_data.v                640x480 视频时序，输出 hs/vs/de 与像素坐标。
+  video_delay.v                      视频行缓冲延迟，把像素推迟若干拍与同步信号对齐。
+  video_rgb_to_axis_640x480.v        把 RGB 像素流打包成 AXI4-Stream 送 HDMI 发送核。
+  hdmi_1_4b_transmitter_core\        HDMI 1.4b TMDS 发送核（加密网表）。
+  hdmi_phy_warpper.v                 HDMI PHY 包装，内部实例化 4 条 LVDS 串化。
+  lane_lvds_10_1.v                   LVDS 10:1 串化，10 位并行转串行。
+  I2S_receiver.v                     I2S 接收，从串行数据恢复左对齐采样。
+  audio_arc_calculate.v              音频与视频时钟比例计算，产生 HDMI 音频 N/CTS。
+  hdmi_audio_tone_i2s_64fs.v         I2S 发送，位时钟为采样率的 64 倍。
+
+  hdmi_audio_tone_pcm_scale.v        PCM 采样位宽缩放。标记 AutoExcluded，不参与编译。
+  key_remove_shakes.v                按键消抖。标记 AutoExcluded，且没有模块实例化它。
+  video_source_test.v                测试图案源。标记 AutoExcluded，不参与编译。
+
+子目录
+  SD\    TF 卡、BMP 图像、WAV 音频、SDRAM 帧缓存、数码管
+  osd\   OSD 图层、字幕、菜单、频谱、按键语义
+  ip\    IP 配置与生成文件（PLL、异步 FIFO、SDRAM 原语）
+  include\ 全局宏定义与 SDRAM 控制器加密网表
+  rom\      从 ROM 取采样转 I2S 的播放器（AutoExcluded）
+  rom_init\ 音频 ROM 的初值文件
+  test\     单音测试信号源（AutoExcluded）

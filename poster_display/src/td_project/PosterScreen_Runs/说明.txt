@@ -1,0 +1,10 @@
+﻿TD 的两次 Run，各自一个子目录。
+
+子目录
+  syn_1\   综合：read_design -> opt_rtl -> opt_gate
+  phy_1\   布局布线：opt_place -> opt_route -> bitgen
+
+phy_1 依赖 syn_1 产生的网表（settings.cfg 里 parent = ../syn_1），
+先跑 syn_1。在 TD 里对 phy_1 点 Run 会自动带上 syn_1。
+
+
